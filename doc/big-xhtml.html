@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>PHP Manual (Partial)</title>
+
+</head>
+<body>
+<div id="index" class="set"><h1>PHP Manual (Partial)</h1><strong>Table of Contents</strong><ul class="chunklist chunklist_title">
+<li><a href="#book.ssdeep">ssdeep</a> — ssdeep Fuzzy Hashing<ul class="chunklist chunklist_title">
+<li><a href="#intro.ssdeep">Introduction</a></li>
+<li><a href="#ssdeep.setup">Installing/Configuring</a></li>
+<li><a href="#ssdeep.constants">Predefined Constants</a></li>
+<li><a href="#ref.ssdeep">ssdeep Functions</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="book.ssdeep" class="book">
+ <h1>ssdeep Fuzzy Hashing</h1><strong>Table of Contents</strong><ul class="chunklist chunklist_title">
+<li><a href="#intro.ssdeep">Introduction</a></li>
+<li><a href="#ssdeep.setup">Installing/Configuring</a><ul class="chunklist chunklist_title">
+<li><a href="#ssdeep.requirements">Requirements</a></li>
+<li><a href="#ssdeep.installation">Installation</a></li>
+<li><a href="#ssdeep.configuration">Runtime Configuration</a></li>
+<li><a href="#ssdeep.resources">Resource Types</a></li>
+</ul>
+</li>
+<li><a href="#ssdeep.constants">Predefined Constants</a></li>
+<li><a href="#ref.ssdeep">ssdeep Functions</a><ul class="chunklist chunklist_title">
+<li><a href="#function.ssdeep-fuzzy-compare">ssdeep_fuzzy_compare</a> — Calculates the match score between two fuzzy hash signatures</li>
+<li><a href="#function.ssdeep-fuzzy-hash-filename">ssdeep_fuzzy_hash_filename</a> — Create a fuzzy hash from a file</li>
+<li><a href="#function.ssdeep-fuzzy-hash">ssdeep_fuzzy_hash</a> — Create a fuzzy hash from a string</li>
+</ul>
+</li>
+</ul>
+
+ 
+
+ 
+<div id="intro.ssdeep" class="preface">
+  <h1 class="title">Introduction</h1>
+  <p class="para">
+	ssdeep is a utility for creating and comparing fuzzy hashes or 
+	<a href="http://dfrws.org/2006/proceedings/12-Kornblum.pdf" class="link external">&raquo; context-triggered piecewise 
+	hashing</a>.
+  </p>
+  <p class="para">
+	Fuzzy hashing can match signatures which have &quot;...sequences of identical 
+	bytes in the same order, although bytes in between these sequences 
+	may be different in both content and length&quot;. (<a href="http://ssdeep.sourceforge.net" class="link external">&raquo; 
+	ssdeep project page</a>)
+  </p>
+  <p class="para">
+   This extension provides functions for creating and comparing fuzzy hashes.
+  </p>
+ </div>
+<hr />
+
+
+ 
+
+
+
+<div id="ssdeep.setup" class="chapter">
+ <h1>Installing/Configuring</h1><strong>Table of Contents</strong><ul class="chunklist chunklist_title">
+<li><a href="#ssdeep.requirements">Requirements</a></li>
+<li><a href="#ssdeep.installation">Installation</a></li>
+<li><a href="#ssdeep.configuration">Runtime Configuration</a></li>
+<li><a href="#ssdeep.resources">Resource Types</a></li>
+</ul>
+
+
+ 
+<div id="ssdeep.requirements" class="section">
+  <h2 class="title">Requirements</h2>
+  <p class="para">
+	This extension requires the <a href="http://ssdeep.sourceforge.net" class="link external">&raquo; ssdeep</a> library.
+  </p>
+ </div>
+<hr />
+
+
+ 
+<div id="ssdeep.installation" class="section">
+  <h2 class="title">Installation</h2>
+  <p class="para">
+   This <a href="http://pecl.php.net/" class="link external">&raquo; PECL</a> extension
+is not bundled with PHP.
+  </p>
+  <p class="para">
+   Information for installing this PECL extension may be
+found in the manual chapter titled <a href="#install.pecl" class="link">Installation
+of PECL extensions</a>. Additional information such as new releases,
+downloads, source files, maintainer information, and a CHANGELOG, can be
+located here: 
+   <a href="http://pecl.php.net/package/ssdeep" class="link external">&raquo; http://pecl.php.net/package/ssdeep</a>.
+  </p>
+ </div>
+<hr />
+
+
+ 
+<div id="ssdeep.configuration" class="section">
+  <h2 class="title">Runtime Configuration</h2>
+  <p class="para">This extension has no configuration directives defined in <var class="filename">php.ini</var>.</p>
+ </div>
+<hr />
+
+
+ 
+<div id="ssdeep.resources" class="section">
+  <h2 class="title">Resource Types</h2>
+  <p class="para">This extension has no resource types defined.</p>
+ </div>
+<hr />
+
+
+</div>
+<hr />
+
+
+
+
+ 
+
+
+
+<div id="ssdeep.constants" class="appendix">
+ <h1>Predefined Constants</h1>
+ <p class="para">This extension has no constants defined.</p>
+</div>
+<hr />
+
+
+
+
+ 
+ 
+
+
+
+<div id="ref.ssdeep" class="reference">
+ <h1 class="title">ssdeep Functions</h1>
+
+ 
+
+
+
+<div id="function.ssdeep-fuzzy-compare" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ssdeep_fuzzy_compare</h1>
+  <p class="refpurpose">Calculates the match score between two fuzzy hash signatures</p>
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">integer</span> <span class="methodname">ssdeep_fuzzy_compare</span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$signature1</tt></span>
+   , <span class="methodparam"><span class="type">string</span> <tt class="parameter">$signature2</tt></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   Calculates the match score between <i><tt class="parameter">signature1</tt></i>
+   and <i><tt class="parameter">signature2</tt></i> using <a href="http://dfrws.org/2006/proceedings/12-Kornblum.pdf" class="link external">&raquo; 
+   context-triggered piecewise hashing</a>, and returns the match
+   score.
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">Parameters</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><i><tt class="parameter">signature1</tt></i></span>
+    <dd>
+
+     <p class="para">
+      The first fuzzy hash signature string.
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><i><tt class="parameter">signature2</tt></i></span>
+    <dd>
+
+     <p class="para">
+      The second fuzzy hash signature string.
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns an integer from 0 to 100 on success, <i>FALSE</i> otherwise. 
+  </p>
+ </div>
+
+
+
+</div>
+<hr />
+
+
+
+
+
+
+
+
+<div id="function.ssdeep-fuzzy-hash-filename" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ssdeep_fuzzy_hash_filename</h1>
+  <p class="refpurpose">Create a fuzzy hash from a file</p>
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname">ssdeep_fuzzy_hash_filename</span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$file_name</tt></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function">ssdeep_fuzzy_hash_filename</span> calculates the hash 
+   of the file specified by <i><tt class="parameter">file_name</tt></i> using 
+   <a href="http://dfrws.org/2006/proceedings/12-Kornblum.pdf" class="link external">&raquo; context-triggered piecewise 
+   hashing</a>, and returns that hash.
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">Parameters</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><i><tt class="parameter">file_name</tt></i></span>
+    <dd>
+
+     <p class="para">
+      The filename of the file to hash.
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns a string on success, <i>FALSE</i> otherwise.
+  </p>
+ </div>
+
+
+
+</div>
+<hr />
+
+
+
+
+
+
+
+
+<div id="function.ssdeep-fuzzy-hash" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ssdeep_fuzzy_hash</h1>
+  <p class="refpurpose">Create a fuzzy hash from a string</p>
+ </div>
+
+ <div class="refsect1 description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname">ssdeep_fuzzy_hash</span>
+    ( <span class="methodparam"><span class="type">string</span> <tt class="parameter">$to_hash</tt></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function">ssdeep_fuzzy_hash</span> calculates the hash of 
+   <i><tt class="parameter">to_hash</tt></i> using <a href="http://dfrws.org/2006/proceedings/12-Kornblum.pdf" class="link external">&raquo; 
+   context-triggered piecewise hashing</a>, and returns that hash.
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters">
+  <h3 class="title">Parameters</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><i><tt class="parameter">to_hash</tt></i></span>
+    <dd>
+
+     <p class="para">
+      The input string.
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns a string on success, <i>FALSE</i> otherwise.
+  </p>
+ </div>
+
+
+
+</div>
+<hr />
+
+
+
+
+
+
+<strong>Table of Contents</strong><ul class="chunklist chunklist_reference">
+<li><a href="#function.ssdeep-fuzzy-compare">ssdeep_fuzzy_compare</a> — Calculates the match score between two fuzzy hash signatures</li>
+<li><a href="#function.ssdeep-fuzzy-hash-filename">ssdeep_fuzzy_hash_filename</a> — Create a fuzzy hash from a file</li>
+<li><a href="#function.ssdeep-fuzzy-hash">ssdeep_fuzzy_hash</a> — Create a fuzzy hash from a string</li>
+</ul>
+</ol>
+</div>
+<hr />
+
+
+
+
+
+</div>
+<hr />
+</div>
+<hr />
+</body>
+</html>

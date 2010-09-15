@@ -1,0 +1,75 @@
+ssdeep fuzzy hashing for php
+====================
+
+Requirements
+-------
+
+  - Linux (tested on Ubuntu)
+  - ssdeep (tested with 2.5 built from source)
+  - PHP (tested on 5.3)
+  
+
+Usage
+-------
+
+Three functions are exposed:
+
+  - ssdeep_fuzzy_hash_filename()
+  - ssdeep_fuzzy_hash()
+  - ssdeep_fuzzy_compare()
+
+ssdeep_fuzzy_hash_filename() allows you to supply a path to a file you would like to get a hash of:
+
+    $hash1 = ssdeep_fuzzy_hash_filename('/home/simon/text.text');
+
+
+ssdeep_fuzzy_hash() will return a hash when it is supplied a string:
+
+    $hash2 = ssdeep_fuzzy_hash('A piece of text would go here!');
+
+ssdeep_fuzzy_compare() compares two hashes and returns their match percentage:
+
+    $match = ssdeep_fuzzy_compare($hash1, $hash2);
+
+Also see the test.php file for more examples of how this can be used.
+
+
+Installing the ssdeep package
+-------
+
+I would recommend building ssdeep from source using the [instructions][1] from it's [project site][2]. Once done **you need** to copy `.libs/*` to `/usr/lib` so that the php_ssdeep extension can see the ssdeep libraries.
+
+    sudo cp .libs/* /usr/lib
+
+You can use the packages supplied with Ubuntu or Debian, but they are not yet updated to the latest version of ssdeep.
+
+If you are having trouble building or running the php_ssdeep extension it expects to see the following directory structure:
+
+> /usr/bin/ssdeep
+>
+> /usr/include/fuzzy.h
+>
+> /usr/lib/libfuzzy.a
+>
+> /usr/lib/libfuzzy.la
+>
+> /usr/lib/libfuzzy.so
+>
+> /usr/lib/libfuzzy.so.2
+>
+> /usr/lib/libfuzzy.so.2.0.0
+
+Source: [Ubuntu Karmic file list][3]
+
+
+ssdeep Licensing Exemption
+-------
+
+Although ssdeep and the fuzzy hashing API are usually licensed under GNU GPLv2 Jesse Kornblum has licenced them to PECL under the terms of the Perl Artistic Licence with the following declaration:
+"I hereby license ssdeep, the current version and all subsequent versions, under the terms of the Perl Artistic License, for inclusion into the PECL."
+See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
+
+
+  [1]: http://ssdeep.sourceforge.net/usage.html#install "ssdeep Installation Instructions"
+  [2]: http://ssdeep.sourceforge.net/ "ssdeep Project Site"
+  [3]: http://packages.ubuntu.com/en/karmic/i386/ssdeep/filelist "Ubuntu Karmic file list for ssdeep"
