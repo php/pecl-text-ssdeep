@@ -1,17 +1,20 @@
-dnl config.m4 for extension ssdeep
-PHP_ARG_WITH(ssdeep, for ssdeep support,
-[  --with-ssdeep        Include ssdeep support])
+m4_include(ax_libssdeep.m4)
+AX_SSDEEP
 
-if test "$PHP_SSDEEP" = "yes"; then
-    PHP_SUBST(SSDEEP_SHARED_LIBADD)
-    PHP_CHECK_LIBRARY(fuzzy, fuzzy_compare,
+if test $SSDEEP_FOUND = "yes"; then
+    dnl Hard set ext_shared to yes as AC_ARG_WITH does not
+    dnl set it but PHP_ARG_WITH would.
+    ext_shared="yes";
+    PHP_CHECK_LIBRARY($SSDEEP_LIB_NAME, fuzzy_compare,
     [
-        PHP_ADD_LIBRARY(fuzzy, 1, SSDEEP_SHARED_LIBADD)
+      dnl Add the neccessary paths
+      PHP_ADD_INCLUDE($SSDEEP_INCLUDEDIR_NO_FLAG)
+      PHP_ADD_LIBRARY_WITH_PATH($SSDEEP_LIB_NAME, $SSDEEP_LIBDIR_NO_FLAG, SSDEEP_SHARED_LIBADD)
+      AC_DEFINE(HAVE_SSDEEP, 1, [Whether you have SSDEEP])
     ],[
-        AC_MSG_ERROR([fuzzy lib not found. See config.log for more information.])
-    ],[]
+      AC_MSG_ERROR([ssdeep lib not found. See config.log for more information.])
+    ],[$SSDEEP_LIBDIR]
     )
-
-    AC_DEFINE(HAVE_SSDEEP, 1, [Whether you have SSDEEP])
     PHP_NEW_EXTENSION(ssdeep, ssdeep.c, $ext_shared)
+	PHP_SUBST(SSDEEP_SHARED_LIBADD)
 fi
