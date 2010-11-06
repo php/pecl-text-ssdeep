@@ -2,12 +2,12 @@
  *
  * php_ssdeep
  *
- * http://github.com/treffynnon/php_ssdeep
+ * http://treffynnon.github.com/php_ssdeep/
  *
  * A PHP extension to expose ssdeep functionality for fuzzy
  * hashing and comparing.
  *
- * Version 1.0.0
+ * Version 1.0.1
  *
  * BSD Licensed.
  *
