@@ -15,19 +15,8 @@
 #     AC_SUBST(SSDEEP_INCLUDEDIR)
 #
 #####
-
 AC_DEFUN([AX_SSDEEP], [
   AC_MSG_CHECKING(for ssdeep)
-  AC_ARG_WITH(ssdeep,
-    [[  --with-ssdeep[=PATH]   use ssdeep @<:@default=yes@:>@, optionally specify path to the ssdeep build directory]],
-    [withssdeep="$withval"],
-    [withssdeep="yes"]
-  )
-  
-  AC_ARG_ENABLE(debug,
-    [  --enable-debug  Enable debugging],
-    [ enabledebug=yes ]
-  )
   
   SSDEEP_LIB_NAME="fuzzy"
   SSDEEP_LIB_FILENAME="lib$SSDEEP_LIB_NAME.so"
