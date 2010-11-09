@@ -37,7 +37,7 @@ AC_DEFUN([AX_SSDEEP], [
       SSDEEP_LIB_DIR="$withssdeep"
     else
       if test -f "$withssdeep/.libs/$SSDEEP_LIB_FILENAME"; then
-        SSDEEP_LIB_DIR="$withssdeep"
+        SSDEEP_LIB_DIR="$withssdeep/.libs/"
       else
         AC_MSG_ERROR(["Could not find ssdeep library '$withssdeep/.libs/$SSDEEP_LIB_FILENAME'. Try specifying the path to the ssdeep build directory."])
       fi

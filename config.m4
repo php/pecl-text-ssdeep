@@ -1,11 +1,11 @@
 PHP_ARG_WITH(ssdeep, for ssdeep support,
-[  --with-ssdeep[=FILE]        Include ssdeep support. File is the optional path to the ssdeep directory.])
-PHP_ARG_ENABLE(debug, whether to enable build debug output,
-[  --enable-debug        ssdeep: Enable debugging during build], no, no)
+[  --with-ssdeep[=DIR]        Include ssdeep support. DIR is the optional path to the ssdeep directory.], yes)
+PHP_ARG_ENABLE(ssdeep-debug, whether to enable build debug output,
+[  --enable-ssdeep-debug        ssdeep: Enable debugging during build], no, no)
 
 if test "$PHP_SSDEEP" != "no"; then
   withssdeep="$PHP_SSDEEP"
-  enabledebug="$PHP_DEBUG"
+  enabledebug="$PHP_SSDEEP_DEBUG"
 
   dnl Include common ssdeep availability test function
   m4_include(ax_libssdeep.m4)
