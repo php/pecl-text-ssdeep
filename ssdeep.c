@@ -77,7 +77,7 @@ const zend_function_entry ssdeep_functions[] = {
 PHP_MINFO_FUNCTION(ssdeep) {
     php_info_print_table_start();
     php_info_print_table_row(2, PHP_SSDEEP_EXTNAME " Module", "enabled");
-    php_info_print_table_row(2, "version", PHP_SSDEEP_EXTVER);
+    php_info_print_table_row(2, "version", PHP_SSDEEP_VERSION);
     if (sapi_module.phpinfo_as_text) {
         /* No HTML for you */
         php_info_print_table_row(2, "By",
@@ -170,7 +170,7 @@ zend_module_entry ssdeep_module_entry = {
     NULL /* PHP_RSHUTDOWN(ssdeep)*/, /* Replace with NULL if there's nothing to do at request end */
     PHP_MINFO(ssdeep),
 #if ZEND_MODULE_API_NO >= 20010901
-    PHP_SSDEEP_EXTVER,
+    PHP_SSDEEP_VERSION,
 #endif
     STANDARD_MODULE_PROPERTIES
 };
