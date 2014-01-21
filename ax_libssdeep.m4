@@ -15,12 +15,11 @@
 #     AC_SUBST(SSDEEP_INCLUDEDIR)
 #
 #####
-AC_CANONICAL_HOST
 AC_DEFUN([AX_SSDEEP], [
   AC_MSG_CHECKING(for ssdeep)
 
+  AC_CANONICAL_HOST
   LIB_EXTENSION="so"
-  host_os="darwin"
   case $host_os in
     darwin*)
       LIB_EXTENSION="dylib"
