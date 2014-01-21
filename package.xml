@@ -44,8 +44,7 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Add in better library availability checking script and remove extraneous docs, which are now available at http://php.net/ssdeep
-</notes>
+ <notes>Bug #60347 OSX can't build as .so hardcoded</notes>
  <contents>
   <dir name="/">
    <dir name="examples">
