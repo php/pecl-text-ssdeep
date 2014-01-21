@@ -15,11 +15,20 @@
 #     AC_SUBST(SSDEEP_INCLUDEDIR)
 #
 #####
+AC_CANONICAL_HOST
 AC_DEFUN([AX_SSDEEP], [
   AC_MSG_CHECKING(for ssdeep)
-  
+
+  LIB_EXTENSION="so"
+  host_os="darwin"
+  case $host_os in
+    darwin*)
+      LIB_EXTENSION="dylib"
+      ;;
+  esac
+
   SSDEEP_LIB_NAME="fuzzy"
-  SSDEEP_LIB_FILENAME="lib$SSDEEP_LIB_NAME.so"
+  SSDEEP_LIB_FILENAME="lib$SSDEEP_LIB_NAME.$LIB_EXTENSION"
 
   if test -z "$withssdeep" -o "$withssdeep" = "yes"; then
     for i in /usr/lib /usr/local/lib; do
@@ -82,6 +91,7 @@ AC_DEFUN([AX_SSDEEP], [
     echo " "
     echo "======================== Debug =============================="
     echo " "
+    echo "\$host_os                    :  $host_os"
     echo "\$SSDEEP_LIB_NAME            :  $SSDEEP_LIB_NAME"
     echo "\$SSDEEP_LIB_FILENAME        :  $SSDEEP_LIB_FILENAME"
     echo "\$SSDEEP_INC_DIR             :  $SSDEEP_INCLUDEDIR"
