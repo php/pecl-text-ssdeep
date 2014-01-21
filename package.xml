@@ -33,10 +33,10 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <email>treffynnon@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-11-06</date>
- <time>22:59:22</time>
+ <date>2014-01-21</date>
+ <time>14:50:22</time>
  <version>
-  <release>1.0.1</release>
+  <release>1.0.3</release>
   <api>1.0.0</api>
  </version>
  <stability>
