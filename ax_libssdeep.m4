@@ -28,6 +28,7 @@ AC_DEFUN([AX_SSDEEP], [
 
   SSDEEP_LIB_NAME="fuzzy"
   SSDEEP_LIB_FILENAME="lib$SSDEEP_LIB_NAME.$LIB_EXTENSION"
+  SSDEEP_LIBDIR=${PHP_LIBDIR-lib}
 
   if test -z "$withssdeep" -o "$withssdeep" = "yes"; then
     for i in /usr/lib /usr/local/lib; do
@@ -40,16 +41,16 @@ AC_DEFUN([AX_SSDEEP], [
     fi
   elif test "$withssdeep" = "no"; then
     AC_MSG_ERROR(["Cannot build whilst ssdeep is disabled."])
+  elif test -f "$withssdeep/$SSDEEP_LIB_FILENAME"; then
+    SSDEEP_LIB_DIR="$withssdeep"
+  elif test -f "$withssdeep/$SSDEEP_LIBDIR/$SSDEEP_LIB_FILENAME"; then
+    SSDEEP_LIB_DIR="$withssdeep/$SSDEEP_LIBDIR"
+  elif test -f "$withssdeep/$SSDEEP_LIB_FILENAME"; then
+    SSDEEP_LIB_DIR="$withssdeep"
+  elif test -f "$withssdeep/.libs/$SSDEEP_LIB_FILENAME"; then
+    SSDEEP_LIB_DIR="$withssdeep/.libs/"
   else
-    if test -f "$withssdeep/$SSDEEP_LIB_FILENAME"; then
-      SSDEEP_LIB_DIR="$withssdeep"
-    else
-      if test -f "$withssdeep/.libs/$SSDEEP_LIB_FILENAME"; then
-        SSDEEP_LIB_DIR="$withssdeep/.libs/"
-      else
-        AC_MSG_ERROR(["Could not find ssdeep library '$withssdeep/.libs/$SSDEEP_LIB_FILENAME'. Try specifying the path to the ssdeep build directory."])
-      fi
-    fi
+    AC_MSG_ERROR(["Could not find ssdeep library '$withssdeep/.libs/$SSDEEP_LIB_FILENAME'. Try specifying the path to the ssdeep build directory."])
   fi
 
   SSDEEP_LIBDIR="-L$SSDEEP_LIB_DIR"
@@ -65,22 +66,20 @@ AC_DEFUN([AX_SSDEEP], [
     if test "$SSDEEP_INCLUDEDIR" = ""; then
       AC_MSG_ERROR(["Could not find ssdeep '$SSDEEP_LIB_NAME.h' header file. Try specifying the path to the ssdeep build directory."])
     fi
+  elif test -f "$withssdeep/../$SSDEEP_LIB_NAME.h"; then
+    SSDEEP_INCLUDEDIR="$withssdeep/../"
+  elif test -f "$withssdeep/include/$SSDEEP_LIB_NAME.h"; then
+    SSDEEP_INCLUDEDIR="$withssdeep/include/"
+  elif test -f "$withssdeep/$SSDEEP_LIB_NAME.h"; then
+    SSDEEP_INCLUDEDIR="$withssdeep"
   else
-    if test -f "$withssdeep/../$SSDEEP_LIB_NAME.h"; then
-      SSDEEP_INCLUDEDIR="$withssdeep/../"
-    else
-      if test -f "$withssdeep/$SSDEEP_LIB_NAME.h"; then
-        SSDEEP_INCLUDEDIR="$withssdeep"
-      else
-        AC_MSG_ERROR(["Could not find ssdeep '$SSDEEP_LIB_NAME.h' header file. Try specifying the path to the ssdeep build directory."])
-      fi
-    fi
+    AC_MSG_ERROR(["Could not find ssdeep '$SSDEEP_LIB_NAME.h' header file. Try specifying the path to the ssdeep build directory."])
   fi
   
   SSDEEP_INCLUDEDIR_NO_FLAG="$SSDEEP_INCLUDEDIR"
   SSDEEP_INCLUDEDIR="-I$SSDEEP_INCLUDEDIR"
 
-  AC_MSG_RESULT([$SSDEEP_LIB_DIR])
+  AC_MSG_RESULT([$SSDEEP_LIB_DIR, $SSDEEP_INCLUDEDIR_NO_FLAG])
     
   AC_DEFINE([SSDEEP_ENABLED], [1], [Enables ssdeep])
   
