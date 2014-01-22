@@ -31,7 +31,7 @@ AC_DEFUN([AX_SSDEEP], [
   SSDEEP_LIBDIR=${PHP_LIBDIR-lib}
 
   if test -z "$withssdeep" -o "$withssdeep" = "yes"; then
-    for i in /usr/lib /usr/local/lib; do
+    for i in /usr/$SSDEEP_LIBDIR /usr/lib /usr/local/lib; do
       if test -f "$i/$SSDEEP_LIB_FILENAME"; then
         SSDEEP_LIB_DIR="$i"
       fi
