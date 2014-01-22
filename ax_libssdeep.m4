@@ -45,8 +45,6 @@ AC_DEFUN([AX_SSDEEP], [
     SSDEEP_LIB_DIR="$withssdeep"
   elif test -f "$withssdeep/$SSDEEP_LIBDIR/$SSDEEP_LIB_FILENAME"; then
     SSDEEP_LIB_DIR="$withssdeep/$SSDEEP_LIBDIR"
-  elif test -f "$withssdeep/$SSDEEP_LIB_FILENAME"; then
-    SSDEEP_LIB_DIR="$withssdeep"
   elif test -f "$withssdeep/.libs/$SSDEEP_LIB_FILENAME"; then
     SSDEEP_LIB_DIR="$withssdeep/.libs/"
   else
