@@ -33,10 +33,10 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <email>treffynnon@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-01-21</date>
- <time>14:50:22</time>
+ <date>2014-01-22</date>
+ <time>13:25:22</time>
  <version>
-  <release>1.0.3</release>
+  <release>1.0.4</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -44,7 +44,13 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Bug #60347 OSX can't build as .so hardcoded</notes>
+ <notes>
+This is a build maintenance release only so there is no need to upgrade.
+
+ - Make use of --with-libdir so installers can override the lib default (RHEL uses lib64 for example)
+ - Clean up the build script to standardise the code constructs used
+ - Add LICENSE, README and CREDITS to PECL package configuration
+ </notes>
  <contents>
   <dir name="/">
    <dir name="examples">

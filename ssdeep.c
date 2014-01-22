@@ -7,7 +7,7 @@
  * A PHP extension to expose ssdeep functionality for fuzzy
  * hashing and comparing.
  *
- * Version 1.0.3
+ * Version 1.0.4
  *
  * BSD Licensed.
  *
