@@ -53,6 +53,9 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
    <dir name="tests" baseinstalldir="/">
     <file role="test" name="ssdeep.phpt"/>
    </dir>
+   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="README"/>
+   <file role="doc" name="CREDITS"/>
    <file role="src" name="ax_libssdeep.m4"/>
    <file role="src" name="config.m4"/>
    <file role="src" name="php_ssdeep.h"/>
