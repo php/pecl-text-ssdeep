@@ -5,7 +5,9 @@ PHP_ARG_ENABLE(ssdeep-debug, whether to enable build debug output,
 
 if test "$PHP_SSDEEP" != "no"; then
   withssdeep="$PHP_SSDEEP"
-  enabledebug="$PHP_SSDEEP_DEBUG"
+  ssdeep_enabledebug="$PHP_SSDEEP_DEBUG"
+  dnl Pass in the library directory name specified by PHP - defaults to lib
+  ssdeep_libdirname="$PHP_LIBDIR"
 
   dnl Include common ssdeep availability test function
   m4_include(ax_libssdeep.m4)
