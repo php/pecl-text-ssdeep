@@ -67,8 +67,12 @@ ZEND_END_ARG_INFO()
 const zend_function_entry ssdeep_functions[] = {
     PHP_FE(ssdeep_fuzzy_hash, arginfo_ssdeep_fuzzy_hash)
     PHP_FE(ssdeep_fuzzy_hash_filename, arginfo_ssdeep_fuzzy_hash_filename)
-    PHP_FE(ssdeep_fuzzy_compare, arginfo_ssdeep_fuzzy_compare) {
-        NULL, NULL, NULL} /* Must be the last line in ssdeep_functions[] */
+    PHP_FE(ssdeep_fuzzy_compare, arginfo_ssdeep_fuzzy_compare)
+#ifdef PHP_FE_END
+    PHP_FE_END
+#else
+    { NULL, NULL, NULL } /* Must be the last line in ssdeep_functions[] */
+#endif
 };
 /* }}} */
 
@@ -101,16 +105,16 @@ PHP_MINFO_FUNCTION(ssdeep) {
 PHP_FUNCTION(ssdeep_fuzzy_hash) {
     char *hash = (char *) emalloc(FUZZY_MAX_RESULT);
     char *to_hash;
-    int to_hash_len;
+    strsize_t to_hash_len;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &to_hash, &to_hash_len) == FAILURE) {
         RETURN_NULL();
     }
 
-    if (0 != fuzzy_hash_buf((unsigned char *) to_hash, to_hash_len, hash)) {
+    if (0 != fuzzy_hash_buf((unsigned char *) to_hash, (uint32_t)to_hash_len, hash)) {
         RETURN_FALSE;
     } else {
-        RETURN_STRING(hash, 0);
+        _RETURN_STRING(hash);
     }
 }
 /* }}} */
@@ -120,7 +124,7 @@ PHP_FUNCTION(ssdeep_fuzzy_hash) {
 PHP_FUNCTION(ssdeep_fuzzy_hash_filename) {
     char *hash = (char *) emalloc(FUZZY_MAX_RESULT);
     char *file_name;
-    int file_name_len;
+    strsize_t file_name_len;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &file_name, &file_name_len) == FAILURE) {
         RETURN_NULL();
@@ -129,7 +133,7 @@ PHP_FUNCTION(ssdeep_fuzzy_hash_filename) {
     if (0 != fuzzy_hash_filename(file_name, hash)) {
         RETURN_FALSE;
     } else {
-        RETURN_STRING(hash, 0);
+        _RETURN_STRING(hash);
     }
 }
 /* }}} */
@@ -138,9 +142,9 @@ PHP_FUNCTION(ssdeep_fuzzy_hash_filename) {
  */
 PHP_FUNCTION(ssdeep_fuzzy_compare) {
     char *signature1 = NULL;
-    int signature1_len;
+    strsize_t signature1_len;
     char *signature2 = NULL;
-    int signature2_len;
+    strsize_t signature2_len;
     int match;
     
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &signature1, &signature1_len, &signature2, &signature2_len) == FAILURE) {

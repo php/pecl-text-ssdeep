@@ -47,4 +47,13 @@
 
     extern zend_module_entry php_ssdeep_module_entry;
 #   define phpext_php_ssdeep_ptr &php_ssdeep_module_entry
+
+#if PHP_MAJOR_VERSION < 7
+typedef int strsize_t;
+#define _RETURN_STRING(s)  RETURN_STRING(s, 0);
+#else
+typedef size_t strsize_t;
+#define _RETURN_STRING(s)  { RETVAL_STRING(s); efree(s); return; }
+#endif
+
 #endif
