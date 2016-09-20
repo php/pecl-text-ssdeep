@@ -1,0 +1,14 @@
+// $Id$
+// vim:ft=javascript
+
+ARG_WITH("ssdeep", "ssdeep support", "no");
+
+if (PHP_SSDEEP != "no") {
+	if (CHECK_LIB("fuzzy_a.lib;fuzzy.lib", "ssdeep", PHP_SSDEEP) &&
+			CHECK_HEADER_ADD_INCLUDE("fuzzy.h", "CFLAGS_SSDEEP") &&
+			CHECK_HEADER_ADD_INCLUDE("edit_dist.h", "CFLAGS_SSDEEP")) {
+		EXTENSION("ssdeep", "ssdeep.c");
+	} else {
+		WARNING("ssdeep not enabled; libraries and headers not found");
+	}
+}
