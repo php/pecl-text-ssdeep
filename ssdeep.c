@@ -48,6 +48,15 @@
 #include "php_ssdeep.h"
 #include <fuzzy.h>
 
+/* For PHP 8 */
+#ifndef TSRMLS_D
+#define TSRMLS_D void
+#define TSRMLS_DC
+#define TSRMLS_C
+#define TSRMLS_CC
+#define TSRMLS_FETCH()
+#endif
+
 /* True global resources - no need for thread safety here */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ssdeep_fuzzy_hash, 0, 0, 1)
     ZEND_ARG_INFO(0, to_hash)
