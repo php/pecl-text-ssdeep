@@ -7,7 +7,7 @@
  * A PHP extension to expose ssdeep functionality for fuzzy
  * hashing and comparing.
  *
- * Version 1.1.0
+ * Version 1.2.0
  *
  * BSD Licensed.
  *
@@ -103,18 +103,18 @@ PHP_MINFO_FUNCTION(ssdeep) {
 /* {{{ proto string ssdeep_fuzzy_hash(string to_hash)
  */
 PHP_FUNCTION(ssdeep_fuzzy_hash) {
-    char *hash = (char *) emalloc(FUZZY_MAX_RESULT);
+    char hash [FUZZY_MAX_RESULT];
     char *to_hash;
-    strsize_t to_hash_len;
+    size_t to_hash_len;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &to_hash, &to_hash_len) == FAILURE) {
-        RETURN_NULL();
-    }
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STRING(to_hash, to_hash_len)
+    ZEND_PARSE_PARAMETERS_END();
 
-    if (0 != fuzzy_hash_buf((unsigned char *) to_hash, (uint32_t)to_hash_len, hash)) {
+    if (0 != fuzzy_hash_buf((unsigned char *) to_hash, (uint32_t)to_hash_len, (char*)&hash)) {
         RETURN_FALSE;
     } else {
-        _RETURN_STRING(hash);
+        RETURN_STRING((char*)&hash);
     }
 }
 /* }}} */
@@ -122,18 +122,18 @@ PHP_FUNCTION(ssdeep_fuzzy_hash) {
 /* {{{ proto string ssdeep_fuzzy_hash_filename(string file_name)
  */
 PHP_FUNCTION(ssdeep_fuzzy_hash_filename) {
-    char *hash = (char *) emalloc(FUZZY_MAX_RESULT);
     char *file_name;
-    strsize_t file_name_len;
+    size_t file_name_len;
+    char hash [FUZZY_MAX_RESULT];
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &file_name, &file_name_len) == FAILURE) {
-        RETURN_NULL();
-    }
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STRING(file_name, file_name_len)
+    ZEND_PARSE_PARAMETERS_END();
 
-    if (0 != fuzzy_hash_filename(file_name, hash)) {
+    if (0 != fuzzy_hash_filename(file_name, (char*)&hash)) {
         RETURN_FALSE;
     } else {
-        _RETURN_STRING(hash);
+        RETURN_STRING((char*)&hash);
     }
 }
 /* }}} */
@@ -142,20 +142,22 @@ PHP_FUNCTION(ssdeep_fuzzy_hash_filename) {
  */
 PHP_FUNCTION(ssdeep_fuzzy_compare) {
     char *signature1 = NULL;
-    strsize_t signature1_len;
+    size_t signature1_len;
     char *signature2 = NULL;
-    strsize_t signature2_len;
+    size_t signature2_len;
     int match;
-    
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &signature1, &signature1_len, &signature2, &signature2_len) == FAILURE) {
-        RETURN_NULL();
-    }
+
+    ZEND_PARSE_PARAMETERS_START(2, 2)
+        Z_PARAM_STRING(signature1, signature1_len)
+        Z_PARAM_STRING(signature2, signature2_len)
+    ZEND_PARSE_PARAMETERS_END();
+
     match = fuzzy_compare(signature1, signature2);
-	
-	if(match < 0 || match > 100) {
-		RETURN_FALSE;
+
+	if (UNEXPECTED(match < 0 || match > 100)) {
+	    RETURN_FALSE;
 	} else {
-		RETURN_LONG(match);
+        RETURN_LONG(match);
 	}
 }
 /* }}} */
@@ -163,9 +165,7 @@ PHP_FUNCTION(ssdeep_fuzzy_compare) {
 /* {{{ ssdeep_module_entry
  */
 zend_module_entry ssdeep_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
-#endif
     PHP_SSDEEP_EXTNAME,
     ssdeep_functions,
     NULL /* PHP_MINIT(ssdeep) */,
@@ -173,9 +173,7 @@ zend_module_entry ssdeep_module_entry = {
     NULL /* PHP_RINIT(ssdeep) */, /* Replace with NULL if there's nothing to do at request start */
     NULL /* PHP_RSHUTDOWN(ssdeep)*/, /* Replace with NULL if there's nothing to do at request end */
     PHP_MINFO(ssdeep),
-#if ZEND_MODULE_API_NO >= 20010901
     PHP_SSDEEP_VERSION,
-#endif
     STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
