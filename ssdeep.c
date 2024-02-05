@@ -68,11 +68,7 @@ const zend_function_entry ssdeep_functions[] = {
     PHP_FE(ssdeep_fuzzy_hash, arginfo_ssdeep_fuzzy_hash)
     PHP_FE(ssdeep_fuzzy_hash_filename, arginfo_ssdeep_fuzzy_hash_filename)
     PHP_FE(ssdeep_fuzzy_compare, arginfo_ssdeep_fuzzy_compare)
-#ifdef PHP_FE_END
     PHP_FE_END
-#else
-    { NULL, NULL, NULL } /* Must be the last line in ssdeep_functions[] */
-#endif
 };
 /* }}} */
 
