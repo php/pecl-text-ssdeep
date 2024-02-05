@@ -35,10 +35,10 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <email>treffynnon@php.net</email>
   <active>yes</active>
  </lead>
- <date>2018-02-20</date>
+ <date>2024-02-05</date>
  <time>02:22:49</time>
  <version>
-  <release>1.1.0</release>
+  <release>1.2.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -47,8 +47,8 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
  </stability>
  <license>New BSD License</license>
  <notes>
-* Patch for PHP 7 support (remicollet)
-* Add basic Windows support (weltling)
+* Patch for PHP 8 support
+* Drop PHP 5 support
  </notes>
  <contents>
   <dir name="/">
@@ -71,7 +71,7 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
  <dependencies>
   <required>
    <php>
-    <min>5.2.0</min>
+    <min>7.0.0</min>
    </php>
    <pearinstaller>
     <min>1.4.0b1</min>

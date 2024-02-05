@@ -34,15 +34,15 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   </maintainer>
   </maintainers>
  <release>
-  <version>1.1.0</version>
-  <date>2018-02-20</date>
+  <version>1.2.0</version>
+  <date>2024-02-05</date>
   <license>New BSD License</license>
   <state>stable</state>
-  <notes>* Patch for PHP 7 support (remicollet)
-* Add basic Windows support (weltling)
+  <notes>* Patch for PHP 8 support
+* Drop PHP 5 support
   </notes>
   <deps>
-   <dep type="php" rel="ge" version="5.2.0"/>
+   <dep type="php" rel="ge" version="7.0.0"/>
   </deps>
   <filelist>
    <dir name="examples">
