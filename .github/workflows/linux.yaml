@@ -1,0 +1,83 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php:
+          - '8.3-alpine'
+          - '8.3-zts-alpine'
+          - '8.2-alpine'
+          - '8.2-zts-alpine'
+          - '8.1-alpine'
+          - '8.1-zts-alpine'
+        image: [php]
+        include:
+          - php: '8.0-alpine'
+            image: ghcr.io/kjdev/php
+          - php: '7.4-alpine'
+            image: ghcr.io/kjdev/php
+          - php: '7.3-alpine'
+            image: ghcr.io/kjdev/php
+          - php: '7.2-alpine'
+            image: ghcr.io/kjdev/php
+          - php: '7.1-alpine'
+            image: ghcr.io/kjdev/php
+          - php: '7.0-alpine'
+            image: ghcr.io/kjdev/php
+
+    container:
+      image: ${{ matrix.image }}:${{ matrix.php }}
+
+    steps:
+      - name: Prepare required command (alpine)
+        run: |
+          apk upgrade --no-cache
+          apk add --no-cache autoconf gcc git libtool make musl-dev
+        if: ${{ contains(matrix.php, 'alpine') }}
+
+      - name: Prepare required command (buster)
+        run: |
+          apt-get update
+          apt-get install -y git
+        if: ${{ contains(matrix.php, 'buster') }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependency library (alpine)
+        run: |
+          apk add --no-cache libfuzzy2-dev
+        if: ${{ matrix.library && contains(matrix.php, 'alpine') }}
+
+      - name: Install dependency library (buster)
+        run: |
+          apt-get install -y libfuzzy-dev
+        if: ${{ matrix.library && contains(matrix.php, 'buster') }}
+
+      - name: Build
+        run: |
+          phpize
+          ./configure
+          make      
+
+      - name: Test
+        run: |
+          make test TESTS="--show-diff" | tee test-output.txt
+          grep 'TEST SUMMARY$' test-output.txt > /dev/null && exit 1 || exit 0
+        env:
+          REPORT_EXIT_STATUS: 1
+          NO_INTERACTION: 1
+
+      - name: Failure Test
+        run: |
+          for FILE in $(find ./tests -name '*.diff'); do
+            echo echo $FILE
+            cat $FILE
+            echo
+          done
+        if: ${{ failure() }}
