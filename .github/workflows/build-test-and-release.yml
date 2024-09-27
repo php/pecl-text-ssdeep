@@ -99,17 +99,6 @@ jobs:
           arch: ${{matrix.arch}}
           toolset: ${{steps.setup-php-sdk.outputs.toolset}}
 
-      # - name: Cache vcpkg and libraries
-      #   id: cache-vcpkg
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ${{ github.workspace }}/vcpkg
-      #       ${{ github.workspace }}/vcpkg/installed
-      #     key: vcpkg-${{matrix.php-version}}-${{matrix.arch}}-${{ hashFiles('**/vcpkg.json') }}
-      #     restore-keys: |
-      #       vcpkg-${{matrix.php-version}}-${{matrix.arch}}-
-
       - name: Get latest ssdeep release info
         id: ssdeep_release
         env:
@@ -303,22 +292,3 @@ jobs:
           name: ${{ steps.check_file_exists.outputs.file_name }}
           path: |
             ${{ github.workspace }}/${{ steps.check_file_exists.outputs.file_name }}
-
-#   release:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     if: github.ref_type == 'tag'
-
-#     steps:
-#       - name: Download build artifacts
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: ssdeep-php-${{ matrix.php-version }}-${{ matrix.os }}
-
-#       - name: Create GitHub Release
-#         uses: softprops/action-gh-release@v1
-#         with:
-#           files: |
-#             ssdeep-php-*.tar.gz   # Replace with your actual archive file
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
