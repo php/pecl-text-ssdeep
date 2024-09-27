@@ -130,7 +130,9 @@ jobs:
 
       - name: Cache ssdeep download
         id: cache_ssdeep
-        uses: actions/cache@v3
+        # explicit restore used to avoid slow cache issue
+        # https://github.com/actions/toolkit/issues/1578
+        uses: actions/cache/restore@v4
         with:
           path: |
             ${{ github.workspace }}/libfuzzy
@@ -158,6 +160,16 @@ jobs:
             Write-Host "Error: The downloaded file is not a zip archive."
             exit 1
           }
+
+      - name: Cache ssdeep save
+        id: cache_ssdeep_save
+        # explicit save used to avoid slow cache issue
+        # https://github.com/actions/toolkit/issues/1578
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ github.workspace }}/libfuzzy
+          key: ssdeep-${{matrix.php-version}}-${{ steps.setup-php-sdk.outputs.vs }}-${{matrix.arch}}-${{ steps.ssdeep_release.outputs.zip_file_name }}
 
       - name: Add libfuzzy to LIB and INCLUDE
         run: |
