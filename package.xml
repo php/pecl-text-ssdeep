@@ -39,18 +39,20 @@ See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
   <date>2018-02-20</date>
   <time>02:22:49</time>
   <version>
-    <release>1.1.0</release>
+    <release>1.1.1</release>
     <api>1.0.0</api>
   </version>
   <stability>
     <release>stable</release>
     <api>stable</api>
   </stability>
-  <license>New BSD License</license>
+  <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
+  <!-- latest release notes - should update <changelog> below with the same too -->
   <notes><![CDATA[
+* Patch for PHP 8 support (remicollet)
 
 For a complete list of changes see:
-https://github.com/php/pecl-text-ssdeep/compare/v1.1.0...latest
+https://github.com/php/pecl-text-ssdeep/compare/1.1.0...1.1.1
 ]]></notes>
   <contents>
     <dir name="/">
@@ -85,6 +87,25 @@ https://github.com/php/pecl-text-ssdeep/compare/v1.1.0...latest
   <extsrcrelease />
   <changelog>
     <release>
+      <date>2024-09-27</date>
+      <time>15:54:00</time>
+      <version>
+        <release>1.1.1</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
+      <notes><![CDATA[
+* Patch for PHP 8 support (remicollet)
+
+For a complete list of changes see:
+https://github.com/php/pecl-text-ssdeep/compare/1.1.0...1.1.1
+]]></notes>
+    </release>
+    <release>
       <date>2018-02-20</date>
       <time>02:22:49</time>
       <version>
@@ -95,10 +116,13 @@ https://github.com/php/pecl-text-ssdeep/compare/v1.1.0...latest
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
       <notes><![CDATA[
 * Patch for PHP 7 support (remicollet)
 * Add basic Windows support (weltling)
+
+For a complete list of changes see:
+https://github.com/php/pecl-text-ssdeep/compare/1.0.4...1.1.0
 ]]></notes>
     </release>
     <release>
@@ -112,13 +136,16 @@ https://github.com/php/pecl-text-ssdeep/compare/v1.1.0...latest
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
       <notes><![CDATA[
 This is a build maintenance release only so there is no need to upgrade.
 
 - Make use of --with-libdir so installers can override the lib default (RHEL uses lib64 for example)
 - Clean up the build script to standardise the code constructs used
 - Add LICENSE, README and CREDITS to PECL package configuration
+
+For a complete list of changes see:
+https://github.com/php/pecl-text-ssdeep/compare/1.0.3...1.0.4
 ]]></notes>
     </release>
     <release>
@@ -132,8 +159,13 @@ This is a build maintenance release only so there is no need to upgrade.
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
-      <notes>Bug #60347 OSX can't build as .so hardcoded</notes>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
+      <notes><![CDATA[
+Bug #60347 OSX can't build as .so hardcoded
+
+For a complete list of changes see:
+https://github.com/php/pecl-text-ssdeep/compare/RELEASE_1_0_2...1.0.3
+]]></notes>
     </release>
     <release>
       <date>2010-11-10</date>
@@ -146,8 +178,10 @@ This is a build maintenance release only so there is no need to upgrade.
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
-      <notes>Patch bug in library availablity code when building with ssdeep path specified (--with-ssdeep=/tmp/ssdeep-2.6 for example) to the upstream packages build directory.</notes>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
+      <notes><![CDATA[ 
+Patch bug in library availablity code when building with ssdeep path specified (--with-ssdeep=/tmp/ssdeep-2.6 for example) to the upstream packages build directory.
+]]></notes>
     </release>
     <release>
       <date>2010-11-06</date>
@@ -160,8 +194,10 @@ This is a build maintenance release only so there is no need to upgrade.
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
-      <notes>Add in better library availability checking script and remove extraneous docs, which are now available at http://php.net/ssdeep</notes>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
+      <notes><![CDATA[
+Add in better library availability checking script and remove extraneous docs, which are now available at http://php.net/ssdeep
+]]></notes>
     </release>
     <release>
       <date>2010-09-15</date>
@@ -174,7 +210,7 @@ This is a build maintenance release only so there is no need to upgrade.
         <release>stable</release>
         <api>stable</api>
       </stability>
-      <license uri="http://www.php.net/license">PHP License</license>
+      <license uri="https://opensource.org/license/bsd-2-clause">BSD 2-Clause License</license>
       <notes>Initial PECL compatible release.</notes>
     </release>
   </changelog>
