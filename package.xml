@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.10.5">
- <name>ssdeep</name>
- <summary>Fuzzy hashing makes it easy to identify similar or almost identical text by simply comparing two hashes against each other.</summary>
- <description>The ssdeep project page describes it as a library for &quot;...computing context triggered piecewise hashes (CTPH). Also called fuzzy hashes, CTPH can match inputs that have homologies. Such inputs have sequences of identical bytes in the same order, although bytes in between these sequences may be different in both content and length&quot;.
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.10.5" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
+  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd
+                      http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>ssdeep</name>
+  <channel>pecl.php.net</channel>
+  <summary>Fuzzy hashing makes it easy to identify similar or almost identical text by simply comparing two hashes against each other.</summary>
+  <description><![CDATA[
+The ssdeep project page describes it as a library for &quot;...computing context triggered piecewise hashes (CTPH). Also called fuzzy hashes, CTPH can match inputs that have homologies. Such inputs have sequences of identical bytes in the same order, although bytes in between these sequences may be different in both content and length&quot;.
 
 For an in depth paper explaining context triggered piecewise hashes please see http://dfrws.org/2006/proceedings/12-Kornblum.pdf
 
@@ -24,41 +29,153 @@ ssdeep Licensing Exemption
 Although ssdeep and the fuzzy hashing API are usually licensed under GNU GPLv2 Jesse Kornblum has licenced them to PECL under the terms of the Perl Artistic Licence with the following declaration:
 &quot;I hereby license ssdeep, the current version and all subsequent versions, under the terms of the Perl Artistic License, for inclusion into the PECL.&quot;
 See http://news.php.net/php.pecl.dev/7625 for the verbatim email.
- </description>
- <maintainers>
-  <maintainer>
-   <user>Treffynnon</user>
-   <name>Simon Holywell</name>
-   <email>treffynnon@php.net</email>
-   <role>lead</role>
-  </maintainer>
-  </maintainers>
- <release>
-  <version>1.1.0</version>
+ ]]></description>
+  <lead>
+    <name>Simon Holywell</name>
+    <user>Treffynnon</user>
+    <email>treffynnon@php.net</email>
+    <active>yes</active>
+  </lead>
   <date>2018-02-20</date>
+  <time>02:22:49</time>
+  <version>
+    <release>1.1.0</release>
+    <api>1.0.0</api>
+  </version>
+  <stability>
+    <release>stable</release>
+    <api>stable</api>
+  </stability>
   <license>New BSD License</license>
-  <state>stable</state>
-  <notes>* Patch for PHP 7 support (remicollet)
+  <notes><![CDATA[
+
+For a complete list of changes see:
+https://github.com/php/pecl-text-ssdeep/compare/v1.1.0...latest
+]]></notes>
+  <contents>
+    <dir name="/">
+      <dir name="examples">
+        <file name="example.php" role="doc" />
+      </dir> <!-- /examples -->
+      <dir name="tests">
+        <file baseinstalldir="/" name="ssdeep.phpt" role="test" />
+      </dir> <!--
+            /tests -->
+      <file name="ax_libssdeep.m4" role="src" />
+      <file name="config.m4" role="src" />
+      <file name="config.w32" role="src" />
+      <file name="CREDITS" role="doc" />
+      <file name="LICENSE" role="doc" />
+      <file name="php_ssdeep.h" role="src" />
+      <file name="README" role="doc" />
+      <file name="ssdeep.c" role="src" />
+    </dir> <!-- / -->
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.0</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.0b1</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <providesextension>ssdeep</providesextension>
+  <extsrcrelease />
+  <changelog>
+    <release>
+      <date>2018-02-20</date>
+      <time>02:22:49</time>
+      <version>
+        <release>1.1.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes><![CDATA[
+* Patch for PHP 7 support (remicollet)
 * Add basic Windows support (weltling)
-  </notes>
-  <deps>
-   <dep type="php" rel="ge" version="5.2.0"/>
-  </deps>
-  <filelist>
-   <dir name="examples">
-    <file role="doc" name="example.php"/>
-   </dir> <!-- /examples -->
-   <dir name="tests">
-    <file role="test" baseinstalldir="/" name="ssdeep.phpt"/>
-   </dir> <!-- /tests -->
-   <file role="src" name="ax_libssdeep.m4"/>
-   <file role="src" name="config.m4"/>
-   <file role="src" name="config.w32"/>
-   <file role="doc" name="CREDITS"/>
-   <file role="doc" name="LICENSE"/>
-   <file role="src" name="php_ssdeep.h"/>
-   <file role="doc" name="README"/>
-   <file role="src" name="ssdeep.c"/>
-  </filelist>
- </release>
+]]></notes>
+    </release>
+    <release>
+      <date>2014-01-22</date>
+      <time>16:04:23</time>
+      <version>
+        <release>1.0.4</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes><![CDATA[
+This is a build maintenance release only so there is no need to upgrade.
+
+- Make use of --with-libdir so installers can override the lib default (RHEL uses lib64 for example)
+- Clean up the build script to standardise the code constructs used
+- Add LICENSE, README and CREDITS to PECL package configuration
+]]></notes>
+    </release>
+    <release>
+      <date>2014-01-21</date>
+      <time>16:04:23</time>
+      <version>
+        <release>1.0.3</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes>Bug #60347 OSX can't build as .so hardcoded</notes>
+    </release>
+    <release>
+      <date>2010-11-10</date>
+      <time>16:04:23</time>
+      <version>
+        <release>1.0.2</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes>Patch bug in library availablity code when building with ssdeep path specified (--with-ssdeep=/tmp/ssdeep-2.6 for example) to the upstream packages build directory.</notes>
+    </release>
+    <release>
+      <date>2010-11-06</date>
+      <time>16:04:23</time>
+      <version>
+        <release>1.0.1</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes>Add in better library availability checking script and remove extraneous docs, which are now available at http://php.net/ssdeep</notes>
+    </release>
+    <release>
+      <date>2010-09-15</date>
+      <time>16:04:23</time>
+      <version>
+        <release>1.0.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.php.net/license">PHP License</license>
+      <notes>Initial PECL compatible release.</notes>
+    </release>
+  </changelog>
 </package>

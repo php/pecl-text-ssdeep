@@ -31,7 +31,7 @@ AC_DEFUN([AX_SSDEEP], [
   SSDEEP_INCLUDE_FILENAME="$SSDEEP_LIB_NAME.h"
 
   if test -z "$withssdeep" -o "$withssdeep" = "yes"; then
-    for i in "/usr/$ssdeep_libdirname" "/usr/local/$ssdeep_libdirname"; do
+    for i in "/usr/$ssdeep_libdirname" "/usr/$ssdeep_libdirname/x86_64-linux-gnu" "/usr/$ssdeep_libdirname/aarch64-linux-gnu" "/usr/local/$ssdeep_libdirname"; do
       if test -f "$i/$SSDEEP_LIB_FILENAME"; then
         SSDEEP_LIB_PATH="$i"
       fi

@@ -1,0 +1,294 @@
+name: Build, test and Release PECL Extension
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # Trigger on version tags
+    branches:
+      - master
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
+    outputs:
+      latest-php-version: ${{ steps.set-latest-php-version.outputs.latest }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Set latest PHP version
+        id: set-latest-php-version
+        run: echo "latest=${{ matrix.php-version }}" >> $GITHUB_ENV
+        if: ${{ matrix.php-version == format('max', join(matrix.php-version)) }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools:
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf libtool pkg-config git libfuzzy-dev
+
+      - name: Build PECL Extension
+        run: |
+          phpize
+          ./configure
+          make
+
+      - name: Run tests
+        run: |
+          make test
+
+  build-windows:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019, windows-latest]
+        php-version: ["7.4", "8.0"] #, "8.1", "8.2", "8.3"]
+        arch: [x64, x86]
+        ts: [nts, ts]
+        exclude:
+          - { os: windows-latest, php-version: "7.4" }
+          - { os: windows-2019, php-version: "8.0" }
+          - { os: windows-2019, php-version: "8.1" }
+          - { os: windows-2019, php-version: "8.2" }
+          - { os: windows-2019, php-version: "8.3" }
+
+    defaults:
+      run:
+        shell: powershell
+
+    env:
+      LIBFUZZY_DIR: ${{ github.workspace }}/libfuzzy
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        id: setup-php-sdk
+        uses: php/setup-php-sdk@v0.9
+        with:
+          arch: ${{ matrix.arch }}
+          ts: ${{ matrix.ts }}
+          version: ${{ matrix.php-version }}
+
+      - name: Print PHP SDK properties
+        run: |
+          Write-Host "PHP SDK Toolset: ${{ steps.setup-php-sdk.outputs.toolset }}"
+          Write-Host "PHP SDK Prefix:  ${{ steps.setup-php-sdk.outputs.prefix }}"
+          Write-Host "PHP SDK VS:      ${{ steps.setup-php-sdk.outputs.vs }}"
+
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{matrix.arch}}
+          toolset: ${{steps.setup-php-sdk.outputs.toolset}}
+
+      - name: Get latest ssdeep release info
+        id: ssdeep_release
+        env:
+          VC_VERSION: ${{ steps.setup-php-sdk.outputs.vs }}
+          ARCH: ${{ matrix.arch }}
+        run: |
+          $DOWNLOAD_URL = "https://windows.php.net/downloads/pecl/deps/"
+
+          Write-Host "Looking up the latest libfuzzy (ssdeep) release for $env:ARCH architecture on $DOWNLOAD_URL"
+
+          $webContent = Invoke-WebRequest -Uri $DOWNLOAD_URL
+          $regexPattern = "libfuzzy-[0-9\.]+-$env:VC_VERSION-$env:ARCH\.zip"
+          $matches = Select-String -InputObject $webContent.Content -Pattern $regexPattern
+
+          if ($matches -eq $null) {
+            Write-Host "Error: No libfuzzy version found for architecture: $env:ARCH and VC version: $env:VC_VERSION"
+            exit 1
+          }
+
+          $latestFile = $matches.Matches | ForEach-Object { $_.Value } | Sort-Object | Select-Object -Last 1
+
+          Write-Host "Latest version found: $latestFile on $DOWNLOAD_URL"
+
+          $zip_url = "$DOWNLOAD_URL$latestFile"
+          Write-Host "Download URL: $zip_url"
+
+          echo "zip_url=$zip_url" >> $env:GITHUB_OUTPUT
+          echo "zip_file_name=$latestFile" >> $env:GITHUB_OUTPUT
+
+      - name: Cache ssdeep download
+        id: cache_ssdeep
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/libfuzzy
+          key: ssdeep-${{matrix.php-version}}-${{ steps.setup-php-sdk.outputs.vs }}-${{matrix.arch}}-${{ steps.ssdeep_release.outputs.zip_file_name }}
+
+      - name: Download the latest libfuzzy Windows release
+        if: steps.cache_ssdeep.outputs.cache-hit != 'true'
+        env:
+          ZIP_URL: ${{ steps.ssdeep_release.outputs.zip_url }}
+          ZIP_FILE: "${{ github.workspace }}\\${{ steps.ssdeep_release.outputs.zip_file_name }}"
+        run: |
+          Invoke-WebRequest -Uri $env:ZIP_URL -OutFile $env:ZIP_FILE
+
+      - name: Extract the downloaded zip file into the ssdeep directory
+        if: steps.cache_ssdeep.outputs.cache-hit != 'true'
+        id: extract_libfuzzy
+        env:
+          ZIP_FILE: "${{ github.workspace }}\\${{ steps.ssdeep_release.outputs.zip_file_name }}"
+        run: |
+          if ($env:ZIP_FILE -like "*.zip") {
+            Write-Host "Unzipping ${env:ZIP_FILE}..."
+            Expand-Archive -Path $env:ZIP_FILE -DestinationPath $env:LIBFUZZY_DIR -Force
+            Write-Host "libfuzzy extracted to $env:LIBFUZZY_DIR"
+          } else {
+            Write-Host "Error: The downloaded file is not a zip archive."
+            exit 1
+          }
+
+      - name: Add libfuzzy to LIB and INCLUDE
+        run: |
+          Write-Host "Adding $env:LIBFUZZY_DIR to LIB and INCLUDE environment variables"
+
+          $libPath = Join-Path $env:LIBFUZZY_DIR "lib"
+          $includePath = Join-Path $env:LIBFUZZY_DIR "include"
+
+          if ((Test-Path $libPath) -and (Test-Path $includePath)) {
+            $env:LIB += ";$libPath"
+            $env:INCLUDE += ";$includePath"
+
+            # propagate the changes to the next steps
+            echo "LIB=$env:LIB" >> $env:GITHUB_ENV
+            echo "INCLUDE=$env:INCLUDE" >> $env:GITHUB_ENV
+
+            Write-Host "LIB is now: $env:LIB"
+            Write-Host "INCLUDE is now: $env:INCLUDE"
+          } else {
+            Write-Host "Error: lib and include directories not found at $libPath and $includePath"
+            exit 1
+          }
+
+      - name: List the contents of the working directory
+        run: |
+          Get-ChildItem -Path ${{ github.workspace }}
+
+      - name: PHPize PECL Extension
+        shell: cmd
+        run: |
+          phpize
+
+      - name: Configure PHP Extension
+        shell: cmd
+        run: |
+          configure --with-ssdeep --with-php-build=.\..\deps --with-prefix=${{ steps.setup-php-sdk.outputs.prefix }}
+
+      - name: extract variables from Makefile (build_dir and dll_file)
+        id: extract_makefile_vars
+        shell: powershell
+        env:
+          DLL_FILE_NAME: php_ssdeep.dll
+        run: |
+          $makefileContent = Get-Content -Path ./Makefile -Raw
+          $buildDirsSub = [regex]::Match($makefileContent, "BUILD_DIRS_SUB=(.*)").Groups[1].Value.Trim()
+          $dllFullPath = Join-Path -Path $buildDirsSub -ChildPath $env:DLL_FILE_NAME
+
+          echo "dll_path=$dllFullPath" >> $env:GITHUB_OUTPUT
+          echo "dll_file_name=$env:DLL_FILE_NAME" >> $env:GITHUB_OUTPUT
+
+      - name: Build PHP Extension
+        shell: cmd
+        run: |
+          nmake
+
+      - name: Verify the file was built
+        env:
+          dll_path: ${{ steps.extract_makefile_vars.outputs.dll_path }}
+        run: |
+          if (Test-Path $env:dll_path) {
+            Write-Host "The extension was built successfully."
+          } else {
+            Write-Host "Error: The extension was not built."
+            exit 1
+          }
+
+      - name: Run tests
+        shell: cmd
+        run: |
+          nmake test TESTS="--show-diff -g FAIL,BORK,WARN,LEAK tests"
+
+      - name: Copy the built extension to the workspace
+        id: copy_dll
+        run: |
+          Copy-Item -Path "${{ steps.extract_makefile_vars.outputs.dll_path }}" -Destination "${{ github.workspace }}"
+
+          echo "dll_path_for_packaging=${{ github.workspace }}\\${{ steps.extract_makefile_vars.outputs.dll_file_name }}" >> $env:GITHUB_OUTPUT
+
+      - name: Generate SHA256 sum of the built extension
+        id: generate_sha256
+        env:
+          SHA256_FILE: ${{ steps.copy_dll.outputs.dll_path_for_packaging }}.sha256
+        run: |
+          $checksum = Get-FileHash -Path ${{ steps.copy_dll.outputs.dll_path_for_packaging }} -Algorithm SHA256
+          $lowercaseChecksum = $checksum.Hash.ToLower()
+          [System.IO.File]::WriteAllText($env:SHA256_FILE, $lowercaseChecksum)
+
+          Write-Host "SHA256 checksum: $lowercaseChecksum"
+          echo "sha256=$lowercaseChecksum" >> $env:GITHUB_OUTPUT
+          echo "sha256_file=$env:SHA256_FILE" >> $env:GITHUB_OUTPUT
+
+      - name: Archive build artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-ssdeep-${{ matrix.os }}-${{ matrix.arch }}-php${{ matrix.php-version }}-${{ matrix.ts }}
+          path: |
+            ${{ steps.copy_dll.outputs.dll_path_for_packaging }}
+            ${{ steps.generate_sha256.outputs.sha256_file }}
+
+  release_for_upload_to_pecl:
+    if: github.ref_type == 'tag'
+    needs: [build-linux]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create a release of the extension
+        run: |
+          pear package
+
+      - name: Check for ssdeep file matching semver in the current directory
+        id: check_file_exists
+        run: |
+          FILE_PATTERN="ssdeep-[0-9]+\.[0-9]+\.[0-9]+.tgz"
+
+          # Check if a file matching the pattern exists in the current directory
+          if ls ./${FILE_PATTERN} 1> /dev/null 2>&1; then
+            # Capture the actual file name
+            FILE_FOUND=$(ls ./${FILE_PATTERN})
+            echo "File ${FILE_FOUND} found in the current directory."
+            echo "file_name=${FILE_FOUND}" >> $GITHUB_ENV
+          else
+            echo "File matching pattern ${FILE_PATTERN} not found."
+            exit 1
+          fi
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.check_file_exists.outputs.file_name }}
+          path: |
+            ${{ github.workspace }}/${{ steps.check_file_exists.outputs.file_name }}
