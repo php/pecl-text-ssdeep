@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "*.*.*" # Trigger on version tags
+  pull_request:
     branches:
       - master
   workflow_dispatch: # Allows manual trigger
@@ -11,7 +12,7 @@ on:
 jobs:
   check-version:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') # Ensure it's a tag
+    if: github.ref_type == 'tag'
     steps:
       - name: Check if tag is a valid version
         run: |
@@ -305,7 +306,7 @@ jobs:
 
           if [ -n "$FILE_FOUND" ]; then
             echo "File ${FILE_FOUND} found in the current directory."
-            echo "file_name=${FILE_FOUND}" >> $GITHUB_ENV
+            echo "file_name=${FILE_FOUND}" >> $GITHUB_OUTPUT
           else
             echo "File matching pattern ${FILE_PATTERN} not found."
             exit 1
